@@ -12,6 +12,12 @@ KMLParser.h
 
 target_include_directories(TESTS PUBLIC include)
 
+set (CMAKE_PREFIX_PATH "c:/Qt/Qt5.15.2/5.15.2/msvc2019_64/")
+find_package(Qt5 COMPONENTS Core REQUIRED)
+
+target_link_libraries(TESTS Qt5::Core)
+
+
 set(MSVC_WARNINGS
         /W4 # Baseline reasonable warnings
         /w14242 # 'identifier': conversion from 'type1' to 'type1', possible loss of data
