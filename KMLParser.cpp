@@ -36,11 +36,52 @@ QString KMLParser::parseDocName(const QString& file_path)
 
 				return DocName;
 			}
+
 		}
 
 	}
 
+	return "";
+	
+}
 
+QVector<QString> KMLParser::Gains(const QString& file_path)
+{
+	QFile file(file_path);
+
+	file.open(QIODevice::ReadOnly);
+
+	QXmlStreamReader reader;
+
+	QVector<QString> gains;
+
+	reader.setDevice(&file);
+
+	while (!reader.atEnd())
+	{
+
+		if (reader.readNextStartElement())
+		{
+
+			if (reader.name() == "Placemark")
+			{
+
+				while (reader.readNextStartElement())
+				{
+					if (reader.name() == "name")
+					{
+						gains.append(reader.readElementText());
+						
+						
+					}
+				}
+				
+			}	
+		}
+	
+	}
+	qDebug() << gains;
+	return gains;
 	
 }
 

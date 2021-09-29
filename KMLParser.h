@@ -12,6 +12,7 @@ class KMLParser
 		bool openDoc(QString& file_path);
 
 		QString parseDocName(const QString& file_path);
+		QVector<QString> Gains(const QString& file_path);
 
 
 
