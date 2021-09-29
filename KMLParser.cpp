@@ -80,9 +80,45 @@ QVector<QString> KMLParser::Gains(const QString& file_path)
 		}
 	
 	}
-	qDebug() << gains;
 	return gains;
 	
+}
+
+QVector<QString> KMLParser::Coordinates(const QString& file_path)
+{
+
+	QFile file(file_path);
+
+	file.open(QIODevice::ReadOnly);
+
+	QXmlStreamReader reader;
+
+	reader.setDevice(&file);
+
+	QVector<QString> coordinates;
+
+	while (!reader.atEnd())
+	{
+		if (reader.readNextStartElement())
+		{
+			if (reader.name() == "LinearRing")
+			{
+				while (reader.readNextStartElement())
+				{
+					if (reader.name() == "coordinates")
+					{
+						coordinates.append(reader.readElementText());
+					
+					}
+				
+				}
+			
+			}
+		
+		}	
+	}
+
+	return coordinates;
 }
 
 

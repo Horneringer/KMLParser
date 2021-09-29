@@ -1,6 +1,16 @@
 #include "KMLParser.h"
 #include <catch2.hpp>
 
+namespace Catch
+{
+/// Для нормального вывода QString в сообщениях catch2
+template<>
+struct StringMaker<QString>
+{
+	static std::string convert(const QString& value) { return value.toStdString(); }
+};
+} // namespace Catch
+
 TEST_CASE("Open file")
 {
 
@@ -30,9 +40,22 @@ TEST_CASE("Parse Gains")
 
 	const QString file_path = "02_Spot_3.kml";
 
-	QVector<QString> gains = {"Gain 54.4 ", "Gain 52.4", "Gain 50.4", "Gain 48.4", "Gain 46.4", "Gain 44.4"};
+	QVector<QString> gains = {"Gain 54.4", "Gain 52.4", "Gain 50.4", "Gain 48.4", "Gain 46.4", "Gain 44.4"};
 
 	REQUIRE(instance3.Gains(file_path) == gains);
+
+
+}
+
+TEST_CASE("Parse Coordinates")
+{
+	KMLParser instance4;
+
+	const QString file_path = "02_Spot_3.kml";
+
+	QVector<QString> coordinates = {""};
+
+	REQUIRE(instance4.Coordinates(file_path) == coordinates);
 
 
 }

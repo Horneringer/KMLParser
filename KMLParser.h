@@ -13,7 +13,7 @@ class KMLParser
 
 		QString parseDocName(const QString& file_path);
 		QVector<QString> Gains(const QString& file_path);
-
+		QVector<QString> Coordinates(const QString& file_path);
 
 
 };
