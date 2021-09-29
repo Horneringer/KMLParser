@@ -22,8 +22,6 @@ QString KMLParser::parseDocName(const QString& file_path)
 	QFile file (file_path);
 	file.open(QIODevice::ReadOnly);
 
-	QString DocName;
-
 	QXmlStreamReader reader;
 
 	reader.setDevice(&file);
@@ -34,14 +32,16 @@ QString KMLParser::parseDocName(const QString& file_path)
 		{
 			if (reader.name().toString() == "name")
 			{
-				DocName = reader.readElementText();
+				QString DocName = reader.readElementText();
+
+				return DocName;
 			}
 		}
 
 	}
 
 
-	return DocName;
+	
 }
 
 
