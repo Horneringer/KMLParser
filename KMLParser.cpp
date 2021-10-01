@@ -1,51 +1,7 @@
 #include "KMLParser.h"
 
-bool KMLParser::openDoc(QString& file_path)
-{
 
-	QFile* file = new QFile(file_path);
-	if (!file->open(QIODevice::ReadOnly | QIODevice::Text))
-	{
-		return false;
-	}
-
-	else
-	{
-
-		return true;
-	}
-}
-
-QString KMLParser::parseDocName(const QString& file_path)
-{
-
-	QFile file (file_path);
-	file.open(QIODevice::ReadOnly);
-
-	QXmlStreamReader reader;
-
-	reader.setDevice(&file);
-
-	while (!reader.atEnd())
-	{
-		if (reader.readNextStartElement())
-		{
-			if (reader.name().toString() == "name")
-			{
-				QString DocName = reader.readElementText();
-
-				return DocName;
-			}
-
-		}
-
-	}
-
-	return "";
-	
-}
-
-QVector<QString> KMLParser::Gains(const QString& file_path)
+Zone KMLParser::Zone_coords(const QString& file_path)
 {
 	QFile file(file_path);
 
@@ -53,16 +9,23 @@ QVector<QString> KMLParser::Gains(const QString& file_path)
 
 	QXmlStreamReader reader;
 
-	QVector<QString> gains;
-
 	reader.setDevice(&file);
 
+	Zone zone;
+	QVector<QString> string_coordinates;
+	QVector<QVector<double>> v_vec;
+
+	// парсинг имени файла
 	while (!reader.atEnd())
 	{
-
 		if (reader.readNextStartElement())
 		{
+			if (reader.name().toString() == "name")
+			{
+				zone.file_name = reader.readElementText();
+			}
 
+			// парсинг имён зон
 			if (reader.name() == "Placemark")
 			{
 
@@ -70,55 +33,72 @@ QVector<QString> KMLParser::Gains(const QString& file_path)
 				{
 					if (reader.name() == "name")
 					{
-						gains.append(reader.readElementText());
-						
-						
+						zone.gains.append(reader.readElementText());
 					}
 				}
-				
-			}	
-		}
-	
-	}
-	return gains;
-	
-}
+			}
 
-QVector<QString> KMLParser::Coordinates(const QString& file_path)
-{
-
-	QFile file(file_path);
-
-	file.open(QIODevice::ReadOnly);
-
-	QXmlStreamReader reader;
-
-	reader.setDevice(&file);
-
-	QVector<QString> coordinates;
-
-	while (!reader.atEnd())
-	{
-		if (reader.readNextStartElement())
-		{
+			// парсинг координат
 			if (reader.name() == "LinearRing")
 			{
 				while (reader.readNextStartElement())
 				{
 					if (reader.name() == "coordinates")
 					{
-						coordinates.append(reader.readElementText());
-					
+						string_coordinates.append(reader.readElementText());
 					}
-				
 				}
-			
 			}
-		
-		}	
+
+
+		}
 	}
 
-	return coordinates;
+	for (auto item : string_coordinates)
+	{
+		QVector<double> vec;
+
+		std::stringstream buf(item.toStdString());
+
+		for (double num; buf >> num;)
+		{
+			vec.push_back(num);
+
+			if (buf.peek() == ',')
+				buf.ignore();
+		}
+
+		v_vec.push_back(vec);
+	}
+
+	for (auto i = 0; i < v_vec.size(); i++)
+	{
+		for (auto j = 0; j < v_vec[i].size(); j++)
+		{
+			if (v_vec[i][j] == 0)
+			{
+				v_vec[i].erase(v_vec[i].begin() + j);
+			}
+		}
+	}
+
+	for (auto i = 0; i < v_vec.size(); i++)
+	{
+		QVector<QPair<double, double>> crd = {};
+		for (auto j = 0; j < v_vec[i].size(); j++)
+		{
+			if (j % 2 == 0)
+			{
+				crd.push_back(qMakePair(v_vec[i][j], v_vec[i][j + 1]));
+			}
+		}
+
+		zone.coordinates.push_back(crd);
+	}
+
+	
+
+	return zone;
 }
 
 
