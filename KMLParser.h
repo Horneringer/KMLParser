@@ -6,27 +6,28 @@
 
 struct Zone
 {
-	QString file_name;
+	
 
-	QVector<QString> gains;
+	QString gain;
 
-	QVector<QVector<QPair<double, double>>> coordinates;
+	QVector<QPair<double, double>> coordinates;
 
 	
+};
+
+struct Intelsat
+{
+	QString file_name; 
+
+	QVector<Zone> zones;
 };
 
 class KMLParser
 {
 
 	public:
-		
-		bool openDoc(QString& file_path);
 
-		QString parseDocName(const QString& file_path);
-		QVector<QString> Gains(const QString& file_path);
-		QVector<QVector<QPair<double, double>>> Coordinates(const QString& file_path);
-
-		Zone Zone_coords(const QString& file_path);
+		Intelsat Zone_coords(const QString& file_path);
 
 		
 };

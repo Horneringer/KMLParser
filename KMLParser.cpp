@@ -1,7 +1,7 @@
 #include "KMLParser.h"
 
 
-Zone KMLParser::Zone_coords(const QString& file_path)
+Intelsat KMLParser::Zone_coords(const QString& file_path)
 {
 	QFile file(file_path);
 
@@ -11,7 +11,7 @@ Zone KMLParser::Zone_coords(const QString& file_path)
 
 	reader.setDevice(&file);
 
-	Zone zone;
+	Intelsat intelsat;
 	QVector<QString> string_coordinates;
 	QVector<QVector<double>> v_vec;
 
@@ -22,7 +22,7 @@ Zone KMLParser::Zone_coords(const QString& file_path)
 		{
 			if (reader.name().toString() == "name")
 			{
-				zone.file_name = reader.readElementText();
+				intelsat.file_name = reader.readElementText();
 			}
 
 			// парсинг имён зон
@@ -33,7 +33,7 @@ Zone KMLParser::Zone_coords(const QString& file_path)
 				{
 					if (reader.name() == "name")
 					{
-						zone.gains.append(reader.readElementText());
+						intelsat.zones.push_back({reader.readElementText()});
 					}
 				}
 			}
@@ -46,6 +46,44 @@ Zone KMLParser::Zone_coords(const QString& file_path)
 					if (reader.name() == "coordinates")
 					{
 						string_coordinates.append(reader.readElementText());
+
+						QVector<double> vec;
+
+						std::stringstream buf(reader.readElementText().toStdString());
+
+						for (double num; buf >> num;)
+						{
+							
+							vec.push_back(num);
+
+							if (buf.peek() == ',')
+								buf.ignore();
+
+							
+						}
+
+						for (auto i = 0; i < vec.size(); i++)
+						{
+								if (vec[i] == 0)
+								{
+									vec.erase(vec.begin() + i);
+								}
+							
+						}
+
+
+						for (auto i = 0; i < vec.size(); i++)
+						{
+							if (i % 2 == 0)
+							{
+								qMakePair(vec[i], vec[i + 1]);
+							
+							}
+						
+						
+						}
+
+						//intelsat.zones.push_back({vec});
 					}
 				}
 			}
@@ -54,7 +92,7 @@ Zone KMLParser::Zone_coords(const QString& file_path)
 		}
 	}
 
-	for (auto item : string_coordinates)
+	/*for (auto item : string_coordinates)
 	{
 		QVector<double> vec;
 
@@ -94,11 +132,11 @@ Zone KMLParser::Zone_coords(const QString& file_path)
 		}
 
 		zone.coordinates.push_back(crd);
-	}
+	}*/
 
 	
 
-	return zone;
+	return intelsat;
 }
 
 

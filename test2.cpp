@@ -71,16 +71,17 @@ TEST_CASE("Return struct")
 	Zone zone;
 
 	REQUIRE(instance5.Zone_coords(file_path).file_name == "Intelsat-10-02-Spot-3");
-	REQUIRE(instance5.Zone_coords(file_path).gains == gains);
+	REQUIRE(instance5.Zone_coords(file_path).zones[0].gain == gains[0]);
 
-	qDebug() << instance5.Zone_coords(file_path).file_name << endl;
+	//qDebug() << instance5.Zone_coords(file_path).file_name << endl;
 
-	for (auto i = 0; i < instance5.Zone_coords(file_path).coordinates.size(); i++)
+	/*for (auto i = 0; i < instance5.Zone_coords(file_path).coordinates.size(); i++)
 	{
 		qDebug() << instance5.Zone_coords(file_path).gains[i] << endl;
 		qDebug() << instance5.Zone_coords(file_path).coordinates[i] << endl;
 	
 	
-	}
+	}*/
 
 }
+
