@@ -12,12 +12,13 @@ Intelsat KMLParser::Zone_coords(const QString& file_path)
 	reader.setDevice(&file);
 
 	Intelsat intelsat;
-	QVector<QString> string_coordinates;
-	QVector<QVector<double>> v_vec;
+	
 
 	// парсинг имени файла
 	while (!reader.atEnd())
 	{
+
+		QString zone_name;
 		if (reader.readNextStartElement())
 		{
 			if (reader.name().toString() == "name")
@@ -33,7 +34,8 @@ Intelsat KMLParser::Zone_coords(const QString& file_path)
 				{
 					if (reader.name() == "name")
 					{
-						intelsat.zones.push_back({reader.readElementText()});
+						 zone_name =  reader.readElementText();
+						qDebug() << zone_name << endl;
 					}
 				}
 			}
@@ -43,99 +45,45 @@ Intelsat KMLParser::Zone_coords(const QString& file_path)
 			{
 				while (reader.readNextStartElement())
 				{
+
 					if (reader.name() == "coordinates")
 					{
-						string_coordinates.append(reader.readElementText());
+						QVector<QPair<double, double>> coordinates;
 
-						QVector<double> vec;
+						QString string_coordinates = reader.readElementText();
 
-						std::stringstream buf(reader.readElementText().toStdString());
+						string_coordinates = string_coordinates.trimmed();
 
-						for (double num; buf >> num;)
+						std::stringstream buf1(string_coordinates.toStdString());
+
+						std::string temp;
+						
+						while (std::getline(buf1, temp, '\n'))
 						{
-							
-							vec.push_back(num);
+							QVector<double> vec;
 
-							if (buf.peek() == ',')
-								buf.ignore();
+							std::stringstream buf2(temp.substr(0, temp.length() - 1));
 
-							
-						}
-
-						for (auto i = 0; i < vec.size(); i++)
-						{
-								if (vec[i] == 0)
-								{
-									vec.erase(vec.begin() + i);
-								}
-							
-						}
-
-
-						for (auto i = 0; i < vec.size(); i++)
-						{
-							if (i % 2 == 0)
+							for (double num; buf2 >> num;)
 							{
-								qMakePair(vec[i], vec[i + 1]);
-							
-							}
-						
-						
-						}
+								if (buf2.peek() == ',')
+									buf2.ignore();
 
-						//intelsat.zones.push_back({vec});
+								vec.push_back(num);
+							}
+							
+							coordinates.push_back(qMakePair(vec[0], vec[1]));
+						}
+						 
+						qDebug() << coordinates << endl;					
 					}
+					
 				}
 			}
 
-
 		}
+
 	}
-
-	/*for (auto item : string_coordinates)
-	{
-		QVector<double> vec;
-
-		std::stringstream buf(item.toStdString());
-
-		for (double num; buf >> num;)
-		{
-			vec.push_back(num);
-
-			if (buf.peek() == ',')
-				buf.ignore();
-		}
-
-		v_vec.push_back(vec);
-	}
-
-	for (auto i = 0; i < v_vec.size(); i++)
-	{
-		for (auto j = 0; j < v_vec[i].size(); j++)
-		{
-			if (v_vec[i][j] == 0)
-			{
-				v_vec[i].erase(v_vec[i].begin() + j);
-			}
-		}
-	}
-
-	for (auto i = 0; i < v_vec.size(); i++)
-	{
-		QVector<QPair<double, double>> crd = {};
-		for (auto j = 0; j < v_vec[i].size(); j++)
-		{
-			if (j % 2 == 0)
-			{
-				crd.push_back(qMakePair(v_vec[i][j], v_vec[i][j + 1]));
-			}
-		}
-
-		zone.coordinates.push_back(crd);
-	}*/
-
-	
-
 	return intelsat;
 }
 
