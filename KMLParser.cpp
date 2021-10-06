@@ -1,6 +1,5 @@
 #include "KMLParser.h"
 
-
 Intelsat KMLParser::Zone_coords(const QString& file_path)
 {
 	QFile file(file_path);
@@ -12,24 +11,19 @@ Intelsat KMLParser::Zone_coords(const QString& file_path)
 	reader.setDevice(&file);
 
 	Intelsat intelsat;
-	
 
-	
+	QString zone_name;
+
 	while (!reader.atEnd())
 	{
 
-		
 		if (reader.readNextStartElement())
 		{
-			// парсинг имени файла
 			if (reader.name().toString() == "name")
 			{
 				intelsat.file_name = reader.readElementText();
 			}
 
-			
-			// парсинг имён зон
-			QString zone_name;
 			if (reader.name() == "Placemark")
 			{
 
@@ -38,20 +32,11 @@ Intelsat KMLParser::Zone_coords(const QString& file_path)
 					if (reader.name() == "name")
 					{
 
-						 zone_name =  reader.readElementText();
-						//qDebug() << zone_name << endl;
-
-						 while (reader.readNextStartElement())
-						 {
-						 
-						 
-						 }
-						
+						zone_name = reader.readElementText();
 					}
 				}
 			}
 
-			// парсинг координат
 			if (reader.name() == "LinearRing")
 			{
 				while (reader.readNextStartElement())
@@ -68,7 +53,7 @@ Intelsat KMLParser::Zone_coords(const QString& file_path)
 						std::stringstream buf1(string_coordinates.toStdString());
 
 						std::string temp;
-						
+
 						while (std::getline(buf1, temp, '\n'))
 						{
 							QVector<double> vec;
@@ -82,31 +67,16 @@ Intelsat KMLParser::Zone_coords(const QString& file_path)
 
 								vec.push_back(num);
 							}
-							
+
 							coordinates.push_back(qMakePair(vec[0], vec[1]));
 						}
-						 
-						//qDebug() << zone_name << endl;
-						intelsat.zones.push_back({zone_name,coordinates});
+
+						intelsat.zones.push_back({zone_name, coordinates});
 					}
-					
 				}
-			}//
-
+			}
 		}
-
 	}
 
-	qDebug() << intelsat.file_name << endl;
-	for (auto i = 0; i < intelsat.zones.size(); i++)
-	{
-		qDebug() << intelsat.zones[i].gain<< endl;
-
-		qDebug() << intelsat.zones[i].coordinates << endl;
-	
-	}
-	
 	return intelsat;
 }
-
-
