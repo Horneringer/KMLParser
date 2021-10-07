@@ -20,21 +20,19 @@ TEST_CASE("Overload function")
 
 	const QString file_path = "02_SE_zone.kml";
 
-	const QString file_path2 = "check_ex.kml";
-
 	QFile file(file_path);
 
 	file.open(QIODevice::ReadOnly);
 
 	QByteArray b_arr = file.readAll();
 
-	qDebug() << instance6.zone_coords(file_path2, b_arr).file_name << endl;
+	qDebug() << instance6.zone_coords(b_arr).file_name << endl;
 
 
 	for (auto i = 0; i < 5; i++)
 	{
-		qDebug() << instance6.zone_coords(file_path, b_arr).zones[i].gain << endl;
-		qDebug() << instance6.zone_coords(file_path, b_arr).zones[i].coordinates << endl;
+		qDebug() << instance6.zone_coords(b_arr).zones[i].gain << endl;
+		qDebug() << instance6.zone_coords(b_arr).zones[i].coordinates << endl;
 	}
 
 
