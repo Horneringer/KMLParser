@@ -13,7 +13,23 @@ struct StringMaker<QString>
 
 
 
-TEST_CASE("Overload function")
+TEST_CASE("Overload for Qfile")
+{
+	KMLParser instance5;
+
+	const QString file_path = "02_SE_zone.kml";
+
+	qDebug() << instance5.zone_coords(file_path).file_name << Qt::endl;
+
+	for (auto i = 0; i < 5; i++)
+	{
+		qDebug() << instance5.zone_coords(file_path).zones[i].gain << Qt::endl;
+		qDebug() << instance5.zone_coords(file_path).zones[i].coordinates << Qt::endl;
+	}
+
+}
+
+TEST_CASE("Overload function for QByteArray")
 {
 
 	KMLParser instance6;
@@ -26,13 +42,13 @@ TEST_CASE("Overload function")
 
 	QByteArray b_arr = file.readAll();
 
-	qDebug() << instance6.zone_coords(b_arr).file_name << endl;
+	qDebug() << instance6.zone_coords(b_arr).file_name << Qt::endl;
 
 
 	for (auto i = 0; i < 5; i++)
 	{
-		qDebug() << instance6.zone_coords(b_arr).zones[i].gain << endl;
-		qDebug() << instance6.zone_coords(b_arr).zones[i].coordinates << endl;
+		qDebug() << instance6.zone_coords(b_arr).zones[i].gain << Qt::endl;
+		qDebug() << instance6.zone_coords(b_arr).zones[i].coordinates << Qt::endl;
 	}
 
 
