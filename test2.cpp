@@ -11,22 +11,31 @@ struct StringMaker<QString>
 };
 } // namespace Catch
 
-TEST_CASE("Return struct")
+
+
+TEST_CASE("Overload function")
 {
 
-	KMLParser instance5;
+	KMLParser instance6;
 
-	const QString file_path = "02_Spot_3.kml";
-	QVector<QString> gains = {"Gain 54.4", "Gain 52.4", "Gain 50.4", "Gain 48.4", "Gain 46.4", "Gain 44.4"};
+	const QString file_path = "02_SE_zone.kml";
 
-	Zone zone;
+	const QString file_path2 = "check_ex.kml";
 
-	REQUIRE(instance5.Zone_coords(file_path).file_name == "Intelsat-10-02-Spot-3");
-	REQUIRE(instance5.Zone_coords(file_path).zones[0].gain == gains[0]);
+	QFile file(file_path);
 
-	for (auto i = 0; i < gains.size(); i++)
+	file.open(QIODevice::ReadOnly);
+
+	QByteArray b_arr = file.readAll();
+
+	qDebug() << instance6.zone_coords(file_path2, b_arr).file_name << endl;
+
+
+	for (auto i = 0; i < 5; i++)
 	{
-		qDebug() << instance5.Zone_coords(file_path).zones[i].gain << endl;
-		qDebug() << instance5.Zone_coords(file_path).zones[i].coordinates << endl;
+		qDebug() << instance6.zone_coords(file_path, b_arr).zones[i].gain << endl;
+		qDebug() << instance6.zone_coords(file_path, b_arr).zones[i].coordinates << endl;
 	}
+
+
 }

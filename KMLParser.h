@@ -23,5 +23,11 @@ class KMLParser
 {
 
 public:
-	Intelsat Zone_coords(const QString& file_path);
+	
+
+	Intelsat zone_coords(const QString& file_path, QByteArray& b_arr);
+
+	private:
+	Intelsat zone_coords(const QString& file_path);
+	
 };

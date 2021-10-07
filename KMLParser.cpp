@@ -1,6 +1,6 @@
 #include "KMLParser.h"
 
-Intelsat KMLParser::Zone_coords(const QString& file_path)
+Intelsat KMLParser::zone_coords(const QString& file_path)
 {
 	QFile file(file_path);
 
@@ -79,4 +79,15 @@ Intelsat KMLParser::Zone_coords(const QString& file_path)
 	}
 
 	return intelsat;
+}
+
+Intelsat KMLParser::zone_coords(const QString& file_path, QByteArray& b_arr)
+{
+	QFile file(file_path);
+
+	file.open(QIODevice::WriteOnly);
+
+	file.write(b_arr);
+
+	return zone_coords(file_path);
 }
