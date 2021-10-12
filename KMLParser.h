@@ -1,12 +1,11 @@
 #include <iostream>
-#include <qdebug.h>
+#include <QDebug>
 #include <qfile.h>
 #include <qxmlstream.h>
 #include <sstream>
 
 struct Zone
 {
-
 	QString gain;
 
 	QVector<QPair<double, double>> coordinates;
@@ -21,7 +20,6 @@ struct Intelsat
 
 class KMLParser
 {
-
 public:
 	Intelsat zone_coords(const QByteArray& b_arr);
 	Intelsat zone_coords(const QString& file_path);
@@ -29,3 +27,5 @@ public:
 private:
 	Intelsat parseByteArr(const QByteArray& b_arr);
 };
+
+

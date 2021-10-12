@@ -10,7 +10,6 @@ Intelsat KMLParser::parseByteArr(const QByteArray& b_arr)
 
 	while (!reader.atEnd())
 	{
-
 		if (reader.readNextStartElement())
 		{
 			if (reader.name().toString() == "name")
@@ -20,7 +19,6 @@ Intelsat KMLParser::parseByteArr(const QByteArray& b_arr)
 
 			if (reader.name() == "Placemark")
 			{
-
 				while (reader.readNextStartElement())
 				{
 					if (reader.name() == "name")
@@ -35,7 +33,6 @@ Intelsat KMLParser::parseByteArr(const QByteArray& b_arr)
 			{
 				while (reader.readNextStartElement())
 				{
-
 					if (reader.name() == "coordinates")
 					{
 						QVector<QPair<double, double>> coordinates;
@@ -87,11 +84,13 @@ Intelsat KMLParser::zone_coords(const QString& file_path)
 }
 
 
+
 Intelsat KMLParser::zone_coords(const QByteArray& b_arr)
 {
-
 	return parseByteArr(b_arr);
 }
+
+
 
 
 

@@ -10,10 +10,11 @@ KMLParser.cpp
 KMLParser.h
 )
 
+
 target_include_directories(TESTS PUBLIC include)
 
 set (CMAKE_PREFIX_PATH "c:/Qt/Qt5.15.2/5.15.2/msvc2019_64/")
-find_package(Qt5 COMPONENTS Core REQUIRED)
+find_package(Qt5 COMPONENTS Core Widgets REQUIRED)
 
 target_link_libraries(TESTS Qt5::Core)
 
@@ -53,3 +54,9 @@ set_target_properties(TESTS
         )
 
 
+        add_executable(WINDOW WIN32
+        KMLParser.cpp
+        KMLParser.h
+        window.cpp)
+
+        target_link_libraries(WINDOW Qt5::Core Qt5::Widgets)
