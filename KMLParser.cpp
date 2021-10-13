@@ -3,10 +3,9 @@
 Intelsat KMLParser::parseByteArr(const QByteArray& b_arr)
 {
 	Intelsat intelsat;
-
-	QString zone_name;
-
+	double gain;
 	QXmlStreamReader reader(b_arr);
+	QRegExp reg("[0-9]+.[0-9]+");
 
 	while (!reader.atEnd())
 	{
@@ -23,8 +22,10 @@ Intelsat KMLParser::parseByteArr(const QByteArray& b_arr)
 				{
 					if (reader.name() == "name")
 					{
-
-						zone_name = reader.readElementText();
+						QString zone_name = reader.readElementText();
+						int pos = reg.indexIn(zone_name);
+						zone_name = reg.cap();
+						gain = zone_name.toDouble();
 					}
 				}
 			}
@@ -62,7 +63,7 @@ Intelsat KMLParser::parseByteArr(const QByteArray& b_arr)
 							coordinates.push_back(qMakePair(vec[0], vec[1]));
 						}
 
-						intelsat.zones.push_back({zone_name, coordinates});
+						intelsat.zones.push_back({gain, coordinates});
 					}
 				}
 			}

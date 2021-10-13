@@ -3,10 +3,12 @@
 #include <qfile.h>
 #include <qxmlstream.h>
 #include <sstream>
+#include<qregexp.h>
+
 
 struct Zone
 {
-	QString gain;
+	double gain;
 
 	QVector<QPair<double, double>> coordinates;
 };
