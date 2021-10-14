@@ -1,10 +1,9 @@
-#include <iostream>
 #include <QDebug>
+#include <iostream>
 #include <qfile.h>
+#include <qregexp.h>
 #include <qxmlstream.h>
 #include <sstream>
-#include<qregexp.h>
-
 
 struct Zone
 {
@@ -29,5 +28,3 @@ public:
 private:
 	Intelsat parseByteArr(const QByteArray& b_arr);
 };
-
-

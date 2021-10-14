@@ -11,48 +11,13 @@ struct StringMaker<QString>
 };
 } // namespace Catch
 
-
-
-TEST_CASE("Overload for Qfile")
+TEST_CASE("Check parse file name")
 {
-	KMLParser instance5;
+	KMLParser instance3;
 
 	const QString file_path = "02_SE_zone.kml";
 
-	qDebug() << instance5.zone_coords(file_path).file_name << Qt::endl;
+	Intelsat intelsat = instance3.zone_coords(file_path);
 
-	for (auto i = 0; i < 5; i++)
-	{
-		qDebug() << instance5.zone_coords(file_path).zones[i].gain << Qt::endl;
-		qDebug() << instance5.zone_coords(file_path).zones[i].coordinates << Qt::endl;
-	}
-
+	REQUIRE(intelsat.file_name == "Intelsat-10-02-SE-zone");
 }
-
-TEST_CASE("Overload function for QByteArray")
-{
-
-	KMLParser instance6;
-
-	const QString file_path = "02_SE_zone.kml";
-
-	QFile file(file_path);
-
-	file.open(QIODevice::ReadOnly);
-
-	QByteArray b_arr = file.readAll();
-
-	qDebug() << instance6.zone_coords(b_arr).file_name << Qt::endl;
-
-
-	for (auto i = 0; i < 5; i++)
-	{
-		qDebug() << instance6.zone_coords(b_arr).zones[i].gain << Qt::endl;
-		qDebug() << instance6.zone_coords(b_arr).zones[i].coordinates << Qt::endl;
-	}
-
-}
-
-
-
-

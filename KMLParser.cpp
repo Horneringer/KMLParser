@@ -84,17 +84,7 @@ Intelsat KMLParser::zone_coords(const QString& file_path)
 	return parseByteArr(b_arr);
 }
 
-
-
 Intelsat KMLParser::zone_coords(const QByteArray& b_arr)
 {
 	return parseByteArr(b_arr);
 }
-
-
-
-
-
-
-
-
