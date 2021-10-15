@@ -1,8 +1,8 @@
 #include "KMLParser.h"
 
-Intelsat KMLParser::parseByteArr(const QByteArray& b_arr)
+Spot KMLParser::parseByteArr(const QByteArray& b_arr)
 {
-	Intelsat intelsat;
+	Spot spot;
 	double gain;
 	QXmlStreamReader reader(b_arr);
 	QRegExp reg("[0-9]+.[0-9]+");
@@ -13,7 +13,7 @@ Intelsat KMLParser::parseByteArr(const QByteArray& b_arr)
 		{
 			if (reader.name().toString() == "name")
 			{
-				intelsat.file_name = reader.readElementText();
+				spot.name = reader.readElementText();
 			}
 
 			if (reader.name() == "Placemark")
@@ -63,17 +63,17 @@ Intelsat KMLParser::parseByteArr(const QByteArray& b_arr)
 							coordinates.push_back(qMakePair(vec[0], vec[1]));
 						}
 
-						intelsat.zones.push_back({gain, coordinates});
+						spot.zones.push_back({gain, coordinates});
 					}
 				}
 			}
 		}
 	}
 
-	return intelsat;
+	return spot;
 }
 
-Intelsat KMLParser::zone_coords(const QString& file_path)
+Spot KMLParser::zoneCoords(const QString& file_path)
 {
 	QFile file(file_path);
 
@@ -84,7 +84,7 @@ Intelsat KMLParser::zone_coords(const QString& file_path)
 	return parseByteArr(b_arr);
 }
 
-Intelsat KMLParser::zone_coords(const QByteArray& b_arr)
+Spot KMLParser::zoneCoords(const QByteArray& b_arr)
 {
 	return parseByteArr(b_arr);
 }

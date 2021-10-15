@@ -12,9 +12,9 @@ struct Zone
 	QVector<QPair<double, double>> coordinates;
 };
 
-struct Intelsat
+struct Spot
 {
-	QString file_name;
+	QString name;
 
 	QVector<Zone> zones;
 };
@@ -22,9 +22,9 @@ struct Intelsat
 class KMLParser
 {
 public:
-	Intelsat zone_coords(const QByteArray& b_arr);
-	Intelsat zone_coords(const QString& file_path);
+	Spot zoneCoords(const QByteArray& b_arr);
+	Spot zoneCoords(const QString& file_path);
 
 private:
-	Intelsat parseByteArr(const QByteArray& b_arr);
+	Spot parseByteArr(const QByteArray& b_arr);
 };

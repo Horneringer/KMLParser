@@ -18,14 +18,14 @@ int main(int argc, char* argv[])
 	QGraphicsView view(scene);
 	widget->setWindowTitle("Polygon");
 
-	Intelsat intelsat = kmlparser.zone_coords(file_path);
+	Spot spot = kmlparser.zoneCoords(file_path);
 
-	for (auto i = 0; i < intelsat.zones.size(); i++)
+	for (auto i = 0; i < spot.zones.size(); i++)
 	{
 		QPolygonF polygon;
-		for (auto j = 0; j < intelsat.zones[i].coordinates.size(); j++)
+		for (auto j = 0; j < spot.zones[i].coordinates.size(); j++)
 		{
-			polygon << QPoint(intelsat.zones[i].coordinates[j].first, -intelsat.zones[i].coordinates[j].second);
+			polygon << QPoint(spot.zones[i].coordinates[j].first, -spot.zones[i].coordinates[j].second);
 		}
 
 		scene->addPolygon(polygon);
